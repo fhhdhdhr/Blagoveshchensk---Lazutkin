@@ -52,7 +52,7 @@ class Example(QMainWindow):
 
 
         self.DB_label = Qlabel(self)
-        self.
+        self.(main)
 
 
     def hello(self):

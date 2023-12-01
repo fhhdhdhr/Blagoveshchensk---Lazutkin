@@ -1,79 +1,78 @@
+
 import sys
-from math import sin, cos, pi
-from random import randint
-
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QWidget, QApplication
+import sqlite3
 
 
-class Suprematism(QWidget):
+from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow
+from PyQt5.QtWidgets import QLabel, QLineEdit
+from PyQt5.QtGui import QPixmap
+
+
+class Example(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.setMouseTracking(True)
-        self.qp = QPainter()
-        self.coor = tuple()
-        self.type_figure = None
-        self.flag = False
 
     def initUI(self):
-        self.setGeometry(300, 300, 1000, 1000)
-        self.setWindowTitle('Рисование')
+        self.setGeometry(300, 300, 400, 400)
+        self.setWindowTitle('Chemistry')
 
-    def mousePressEvent(self, event):
-        self.coor = (event.x(), event.y())
-        if event.button() == Qt.LeftButton:
-            self.type_figure = 'circle'
-            self.drawf()
-        elif event.button() == Qt.RightButton:
-            self.type_figure = 'square'
-            self.drawf()
+        self.btn = QPushButton('Найти', self)
+        self.btn.resize(self.btn.sizeHint())
+        self.btn.move(100, 150)
+        self.btn.clicked.connect(self.hello)
 
-    def mouseMoveEvent(self, event):
-        self.coor = (event.x(), event.y())
+        self.label = QLabel(self)
+        self.label.setText("Привет, ведите ваш элемент")
+        self.label.move(40, 30)
+        self.label.resize(300, 400)
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Space:
-            self.type_figure = 'triangle'
-            self.drawf()
+        self.image = QPixmap("download.png")
+        self.label.setPixmap(self.image)
+        self.name_input = QLineEdit(self)
+        self.name_input.move(150, 90)
 
-    def drawf(self):
-        self.flag = True
-        self.update()
 
-    def paintEvent(self, event):
-        if self.flag:
-            self.qp = QPainter()
-            self.qp.begin(self)
-            self.draw_figure()
-            self.qp.end()
+        self.chek_label = QLabel(self)
+        self.chek_label.setText(f"Атомная масса")
+        self.chek_label.move(40, 50)
+        self.chek_label.resize(300, 20)
 
-    def draw_figure(self):
-        if self.type_figure == 'triangle':
-            A = randint(20, 100)
-            self.qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
-            x, y = self.coor
-            coords = [QPoint(x, y - A),
-                      QPoint(int(x + cos(7 * pi / 6) * A),
-                             int(y - sin(7 * pi / 6) * A)),
-                      QPoint(int(x + cos(11 * pi / 6) * A),
-                             int(y - sin(11 * pi / 6) * A))]
-            self.qp.drawPolygon(coords)
-        elif self.type_figure == 'circle':
-            R = randint(20, 100)
-            self.qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
-            self.qp.drawEllipse(int(self.coor[0] - R / 2), int(self.coor[1] - R / 2), R, R)
-        elif self.type_figure == 'square':
-            A = randint(20, 100)
-            self.qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
-            self.qp.drawRect(int(self.coor[0] - A / 2), int(self.coor[1] - A / 2), A, A)
+
+        self.number_label = QLabel(self)
+        self.number_label.setText(f"Порядковый номер")
+        self.number_label.move(40, 70)
+        self.number_label.resize(300, 20)
+
+
+        self.name_label = QLabel(self)
+        self.name_label.setText("Введите элемент:  ")
+        self.name_label.move(40, 90)
+
+
+
+        self.DB_label = Qlabel(self)
+        self.
+
+
+    def hello(self):
+        name = self.name_input.text()
+        self.label.setText(f"Характеристика: {name}")
+        cur = con.cursor()
+        result = cur.execute("""SELECT * FROM database
+                    WHERE name = ? """, (name,)).fetchone()
+        if result is not None:
+            print(result)
+            a = result[1]
+            b = result[2]
+            self.chek_label.setText(f"Атомная масса: {result[1]}")
+            print(self.chek_label.text())
+            self.number_label.setText(f"Порядковый номер: {result[2]}")
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Suprematism()
+    ex = Example()
     ex.show()
-    sys.exit(app.exec_())
-
-#new programma
+    con = sqlite3.connect("BD/database")
+    sys.exit(app.exec())

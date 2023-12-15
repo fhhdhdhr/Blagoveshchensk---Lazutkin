@@ -1,78 +1,111 @@
+import pygame
 
-import sys
-import sqlite3
+from random import randint
 
+class Board():
+    def _init_(self, width, height, screen):
+        self.width = width
+        self.height = height
+        self.screen = screen
+        self.board = [[-1] * self.width for _ in range(self.height)]
+        self. generate_mine()
+        self.left = 10
+        self. top = 10
+        self.cell_size = 30
+        self. Label_mines = |]
 
-from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow
-from PyQt5.QtWidgets import QLabel, QLineEdit
-from PyQt5.QtGui import QPixmap
+def generate_mine (self):
+        for i in range(self.height):
+            for j in range(self.width):
+                r = randint(0, 10)
+                if r < 1:
+                    self.board[i][j] = 10
 
+def set_view(self, left, top, cell_size):
+    self.left = left
+    self.top = top
+    self.cell_size = cell_size
 
-class Example(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+def render (self, screen):
+    x = self.left
+    y = self.top
+    for i in range(self.height):
+        for j in range(self.width):
+            pygame. draw.rect (screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1)
+            if self.board[i][j] == 10:
+                pygame. draw.rect(screen, (255, 0, 0), (x + 1, y + 1, self.cell_size - 2, self.cell_size - 2))
+            x += self.cell_size
+        y += self.cell_size
+        x = self.left
+for text in self. label_mines:
+        self.screen.blit(text[0], (text[1], text[2]))
 
-    def initUI(self):
-        self.setGeometry(300, 300, 400, 400)
-        self.setWindowTitle('Chemistry')
+def write_count_mine(self, count_mine, x, y) :
+        font = pygame. font. Font (None, 25)
+        self. Label_mines. append((font. render (count_mine, True, (100, 255, 100)),
+                                   x * self.cell_size + self.left + 2, y * self.cell_size + self.top + 2))
 
-        self.btn = QPushButton('Найти', self)
-        self.btn.resize(self.btn.sizeHint())
-        self.btn.move(100, 150)
-        self.btn.clicked.connect(self.hello)
+def get_click(self, mouse_pos):
+    self.check_mine(*self.get_cell (mouse_pos))
 
-        self.label = QLabel(self)
-        self.label.setText("Привет, ведите ваш элемент")
-        self.label.move(40, 30)
-        self.label.resize(300, 400)
+def check_mine(self, x, y):
+    range_x = range maxx - 1, 0), min(x + 1, self.width - 1) + 1)
+    range_y = range maxy - 1, 0), min(y + 1, self.height - 1) + 1)
+    print(x, range_x)
+    print(y, range-y)
+    count_mine = 0
+    for i in range_x:
+        for j in range_y:
+            if self.board［jl［il == 10：
+                print (i, j)
+                count_mine += 1
+self.write_count_mine (strcount_mine), x, Y)
+def get_cell(self, mouse_pos):
 
-        self.image = QPixmap("download.png")
-        self.label.setPixmap(self.image)
-        self.name_input = QLineEdit(self)
-        self.name_input.move(150, 90)
+if mouse_pos[0] in range(self.left, self.cell_size * self.width + self.left) and \
 
+mouse_pos|1] in range(self.top, self.cell_size * self.height + self.top):
 
-        self.chek_label = QLabel(self)
-        self.chek_label.setText(f"Атомная масса")
-        self.chek_label.move(40, 50)
-        self.chek_label.resize(300, 20)
+x = (mouse_pos[0] - self.left) // self.cell_size
 
+y = (mouse_pos|1] - self.top) // self.cell_size
 
-        self.number_label = QLabel(self)
-        self.number_label.setText(f"Порядковый номер")
-        self.number_label.move(40, 70)
-        self.number_label.resize(300, 20)
+return x, Y
 
+return None
+def main:
 
-        self.name_label = QLabel(self)
-        self.name_label.setText("Введите элемент:  ")
-        self.name_label.move(40, 90)
+pygame. init
 
+b_W = 7
 
+b_h = 7
 
-        self.DB_label = Qlabel(self)
-        self.(main)
+screen = pygame. display. set_mode ((b_w * 30 + 20, b_h * 30 + 20))
 
+clock = pygame. time.Clock(
 
-    def hello(self):
-        name = self.name_input.text()
-        self.label.setText(f"Характеристика: {name}")
-        cur = con.cursor()
-        result = cur.execute("""SELECT * FROM database
-                    WHERE name = ? """, (name,)).fetchone()
-        if result is not None:
-            print(result)
-            a = result[1]
-            b = result[2]
-            self.chek_label.setText(f"Атомная масса: {result[1]}")
-            print(self.chek_label.text())
-            self.number_label.setText(f"Порядковый номер: {result[2]}")
+gameover = False
 
+board = Board(b_w, b_h, screen)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = Example()
-    ex.show()
-    con = sqlite3.connect("BD/database")
-    sys.exit(app.exec())
+while not gameover:
+
+screen. fill((0, 0, 0)
+board. render (screen)
+
+for event in pygame.event. get:
+
+if event. type == pygame.QUIT:
+
+gameover = True
+
+if event.type == pygame.MOUSEBUTTONDOWN:
+
+board. get_click(event.pos)
+
+clock. tick(60)
+
+pygame. display.flip
+• if _name__ == "_ _main__"
+main

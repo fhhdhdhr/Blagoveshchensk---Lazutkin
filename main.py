@@ -1,111 +1,119 @@
-import pygame
+import pygame, sys
 
-from random import randint
 
-class Board():
-    def _init_(self, width, height, screen):
-        self.width = width
-        self.height = height
-        self.screen = screen
-        self.board = [[-1] * self.width for _ in range(self.height)]
-        self. generate_mine()
-        self.left = 10
-        self. top = 10
-        self.cell_size = 30
-        self. Label_mines = |]
+mainClock = pygame.time.Clock()
+from pygame.locals import *
 
-def generate_mine (self):
-        for i in range(self.height):
-            for j in range(self.width):
-                r = randint(0, 10)
-                if r < 1:
-                    self.board[i][j] = 10
+pygame.init()
+pygame.display.set_caption('Ping-Pong')
+screen = pygame.display.set_mode((600, 300), 0, 32)
+font = pygame.font.SysFont(None, 30)
 
-def set_view(self, left, top, cell_size):
-    self.left = left
-    self.top = top
-    self.cell_size = cell_size
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobj, textrect)
 
-def render (self, screen):
-    x = self.left
-    y = self.top
-    for i in range(self.height):
-        for j in range(self.width):
-            pygame. draw.rect (screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1)
-            if self.board[i][j] == 10:
-                pygame. draw.rect(screen, (255, 0, 0), (x + 1, y + 1, self.cell_size - 2, self.cell_size - 2))
-            x += self.cell_size
-        y += self.cell_size
-        x = self.left
-for text in self. label_mines:
-        self.screen.blit(text[0], (text[1], text[2]))
+click = False
 
-def write_count_mine(self, count_mine, x, y) :
-        font = pygame. font. Font (None, 25)
-        self. Label_mines. append((font. render (count_mine, True, (100, 255, 100)),
-                                   x * self.cell_size + self.left + 2, y * self.cell_size + self.top + 2))
+def main_menu():
+    while True:
 
-def get_click(self, mouse_pos):
-    self.check_mine(*self.get_cell (mouse_pos))
+        screen.fill((160, 82, 45))
+        draw_text('Пинг-Понг', font, (255, 222, 173), screen, 250, 40)
+        mx, my = pygame.mouse.get_pos()
+        button_1 = pygame.Rect(200, 80, 200, 50)
+        button_2 = pygame.Rect(200, 140, 200, 50)
+        button_3 = pygame.Rect(200, 200, 200, 50)
+        if button_3.collidepoint((mx, my)):
+            if click:
+                game()
+        if button_1.collidepoint((mx, my)):
+            if click:
+                options()
+        if button_2.collidepoint((mx, my)):
+            if click:
+                resault()
+        pygame.draw.rect(screen, (210, 180, 140), button_1)
+        pygame.draw.rect(screen, (210, 180, 140), button_2)
+        pygame.draw.rect(screen, (210, 180, 140), button_3)
+        draw_text('Играть', font, (255, 255, 255), screen, 250, 95)
+        draw_text('Настройки', font, (255, 255, 255), screen, 250, 215)
+        draw_text('Результаты', font, (255, 255, 255), screen, 250, 155)
 
-def check_mine(self, x, y):
-    range_x = range maxx - 1, 0), min(x + 1, self.width - 1) + 1)
-    range_y = range maxy - 1, 0), min(y + 1, self.height - 1) + 1)
-    print(x, range_x)
-    print(y, range-y)
-    count_mine = 0
-    for i in range_x:
-        for j in range_y:
-            if self.board［jl［il == 10：
-                print (i, j)
-                count_mine += 1
-self.write_count_mine (strcount_mine), x, Y)
-def get_cell(self, mouse_pos):
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        pygame.display.update()
+        mainClock.tick(60)
 
-if mouse_pos[0] in range(self.left, self.cell_size * self.width + self.left) and \
+def game():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
 
-mouse_pos|1] in range(self.top, self.cell_size * self.height + self.top):
+        draw_text('Настройки', font, (255, 255, 255), screen, 250, 50)
+        draw_text('Смена фона', font, (255, 255, 255), screen, 100, 120)
+        draw_text('Отключение звука', font, (255, 255, 255), screen, 100, 100)
+        print(rect1.bottomright)
+        rect1 = Rect((0, 0, 30, 30))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
 
-x = (mouse_pos[0] - self.left) // self.cell_size
 
-y = (mouse_pos|1] - self.top) // self.cell_size
 
-return x, Y
+        pygame.display.update()
+        mainClock.tick(60)
+def resault():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        draw_text('Результаты последних игр', font, (255, 255, 255), screen, 250, 50)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
 
-return None
-def main:
 
-pygame. init
+        pygame.display.update()
+        mainClock.tick(60)
 
-b_W = 7
+def options():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        draw_text('Счёт', font, (255, 255, 255), screen, 260, 50)
+        draw_text('[a] : [b]', font, (255, 255, 255), screen, 250, 80)
 
-b_h = 7
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
 
-screen = pygame. display. set_mode ((b_w * 30 + 20, b_h * 30 + 20))
 
-clock = pygame. time.Clock(
 
-gameover = False
+        pygame.display.update()
+        mainClock.tick(60)
 
-board = Board(b_w, b_h, screen)
-
-while not gameover:
-
-screen. fill((0, 0, 0)
-board. render (screen)
-
-for event in pygame.event. get:
-
-if event. type == pygame.QUIT:
-
-gameover = True
-
-if event.type == pygame.MOUSEBUTTONDOWN:
-
-board. get_click(event.pos)
-
-clock. tick(60)
-
-pygame. display.flip
-• if _name__ == "_ _main__"
-main
+main_menu()
